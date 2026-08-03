@@ -9,6 +9,8 @@ from backend.config import get_settings
 from database.base import Base
 from database.session import async_engine
 from routes.auth_routes import router as auth_router
+from routes.project_routes import router as project_router
+from routes.ai_routes import router as ai_router
 
 # Setup logger configuration
 logging.basicConfig(level=logging.INFO)
@@ -64,8 +66,10 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 
-# Include Authentication Routes
+# Include Routes
 app.include_router(auth_router)
+app.include_router(project_router)
+app.include_router(ai_router)
 
 @app.get(
     "/api/health",
