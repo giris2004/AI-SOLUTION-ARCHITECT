@@ -1,4 +1,7 @@
-# Repository Pattern Layer for database access abstraction.
-# Exposes direct database querying methods decoupled from business services.
+from repositories.project_repository import ProjectRepository
+from repositories.recommendation_repository import RecommendationRepository
 
-__all__ = []
+__all__ = [
+    "ProjectRepository",
+    "RecommendationRepository",
+]
