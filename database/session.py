@@ -8,8 +8,10 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-# Load environment settings
-load_dotenv()
+# Load environment settings dynamically from project root
+current_dir = os.path.dirname(os.path.abspath(__file__))
+env_path = os.path.abspath(os.path.join(current_dir, "..", ".env"))
+load_dotenv(env_path)
 
 def get_database_url() -> str:
     """
