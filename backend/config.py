@@ -1,0 +1,59 @@
+import json
+from functools import lru_cache
+from typing import List, Union
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class Settings(BaseSettings):
+    """
+    Application Settings loaded automatically from environment variables and .env file.
+    """
+    APP_NAME: str = "AI Solution Architect API"
+    ENVIRONMENT: str = "development"
+    DEBUG: bool = True
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
+    LOG_LEVEL: str = "INFO"
+
+    # CORS Origins (accepts JSON array string or list)
+    CORS_ORIGINS: Union[List[str], str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+    # Security & Auth
+    SECRET_KEY: str = "change_this_to_a_secure_32_byte_hex_string_in_production"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
+
+    # Database URLs
+    DATABASE_URL: str = "postgresql://postgres:password@localhost:5432/ai_solution_architect"
+    ASYNC_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/ai_solution_architect"
+
+    # Gemini AI API Settings
+    GEMINI_API_KEY: str = Field(default="", description="Google Gemini API key")
+    GEMINI_MODEL: str = "gemini-2.0-flash"
+
+    # Storage & PDF Settings
+    PDF_OUTPUT_DIR: str = "./reports/storage"
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+    def get_cors_origins_list(self) -> List[str]:
+        """
+        Parses CORS_ORIGINS list safely if provided as a JSON string.
+        """
+        if isinstance(self.CORS_ORIGINS, str):
+            try:
+                return json.loads(self.CORS_ORIGINS)
+            except Exception:
+                return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
+        return self.CORS_ORIGINS
+
+@lru_cache()
+def get_settings() -> Settings:
+    """
+    Returns cached Settings instance.
+    """
+    return Settings()
