@@ -1,3 +1,4 @@
+import os
 import json
 from functools import lru_cache
 from typing import List, Union
@@ -35,8 +36,14 @@ class Settings(BaseSettings):
     PDF_OUTPUT_DIR: str = "./reports/storage"
 
     # Pydantic v2 specific settings config
+    @classmethod
+    def get_env_path(cls) -> str:
+        import os
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.abspath(os.path.join(current_dir, "..", ".env"))
+
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")),
         env_file_encoding="utf-8",
         extra="ignore",
     )
