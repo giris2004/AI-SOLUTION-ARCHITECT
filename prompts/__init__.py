@@ -1,4 +1,6 @@
-# Prompt templates and schemas for Google Gemini AI recommendations.
-# Stores system roles, requirement analysis configurations, and structured output definitions.
+from prompts.templates import PROJECT_ANALYSIS_PROMPT_TEMPLATE, SYSTEM_PROMPT
 
-__all__ = []
+__all__ = [
+    "SYSTEM_PROMPT",
+    "PROJECT_ANALYSIS_PROMPT_TEMPLATE",
+]
