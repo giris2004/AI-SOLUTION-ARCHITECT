@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
 
     # Database URLs
-    DATABASE_URL: str = "postgresql://postgres:password@localhost:5432/ai_solution_architect"
-    ASYNC_DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/ai_solution_architect"
+    DATABASE_URL: str = "sqlite:///./ai_architect.db"
+    ASYNC_DATABASE_URL: str = "sqlite+aiosqlite:///./ai_architect.db"
 
     # Gemini AI API Settings
     GEMINI_API_KEY: str = Field(default="", description="Google Gemini API Key")
